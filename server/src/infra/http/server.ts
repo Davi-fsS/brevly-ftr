@@ -1,7 +1,9 @@
 import { fastifyCors } from '@fastify/cors'
 import { fastify } from 'fastify'
-import { serializerCompiler, validatorCompiler, hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod'
+import { serializerCompiler, validatorCompiler, hasZodFastifySchemaValidationErrors, jsonSchemaTransform } from 'fastify-type-provider-zod'
 import { createLink } from './routes/create-link'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUi from '@fastify/swagger-ui'
 
 const server = fastify()
 
@@ -23,7 +25,22 @@ server.setErrorHandler((error, request, reply) => {
 	})
 })
 
+server.register(fastifySwagger, {
+	openapi: {
+		info: {
+			title: "brevly",
+			version: "1.0.0"
+		}
+	},
+	transform: jsonSchemaTransform,
+})
+
+server.register(fastifySwaggerUi, {
+	routePrefix: "/docs"
+})
+
 server.register(fastifyCors, { origin: '*' })
+
 server.register(createLink)
 
 server
