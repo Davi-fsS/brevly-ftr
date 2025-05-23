@@ -1,9 +1,30 @@
 import { fastifyCors } from '@fastify/cors'
 import { fastify } from 'fastify'
+import { serializerCompiler, validatorCompiler, hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod'
+import { createLink } from './routes/create-link'
 
 const server = fastify()
 
+server.setValidatorCompiler(validatorCompiler)
+server.setSerializerCompiler(serializerCompiler)
+
+server.setErrorHandler((error, request, reply) => {
+	if(hasZodFastifySchemaValidationErrors(error)){
+		return reply.status(400).send({
+			message: "Validation error",
+			issues: error.validation
+		})
+	}
+
+	console.log(error)
+
+	return reply.status(500).send({
+		nessage: "Internal server error"
+	})
+})
+
 server.register(fastifyCors, { origin: '*' })
+server.register(createLink)
 
 server
 	.listen({ port: 3333, host: '0.0.0.0' })
