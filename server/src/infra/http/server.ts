@@ -4,6 +4,7 @@ import { serializerCompiler, validatorCompiler, hasZodFastifySchemaValidationErr
 import { createLink } from './routes/create-link'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
+import { deleteLink } from './routes/delete-link'
 
 const server = fastify()
 
@@ -42,6 +43,7 @@ server.register(fastifySwaggerUi, {
 server.register(fastifyCors, { origin: '*' })
 
 server.register(createLink)
+server.register(deleteLink)
 
 server
 	.listen({ port: 3333, host: '0.0.0.0' })
