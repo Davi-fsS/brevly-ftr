@@ -8,6 +8,13 @@
       "when": 1747964922766,
       "tag": "0000_simple_giant_man",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1747966396701,
+      "tag": "0001_friendly_pyro",
+      "breakpoints": true
     }
   ]
 }
