@@ -7,6 +7,7 @@ import fastifySwaggerUi from '@fastify/swagger-ui'
 import { deleteLink } from './routes/delete-link'
 import { getLinkByShort } from './routes/get-link-by-shor'
 import { getAllLink } from './routes/get-all-link'
+import { incrementAccessLink } from './routes/increment-access-link'
 
 const server = fastify()
 
@@ -48,6 +49,7 @@ server.register(createLink)
 server.register(deleteLink)
 server.register(getLinkByShort)
 server.register(getAllLink)
+server.register(incrementAccessLink)
 
 server
 	.listen({ port: 3333, host: '0.0.0.0' })
