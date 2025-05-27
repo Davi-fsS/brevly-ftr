@@ -8,6 +8,7 @@ import { deleteLink } from './routes/delete-link'
 import { getLinkByShort } from './routes/get-link-by-shor'
 import { getAllLink } from './routes/get-all-link'
 import { incrementAccessLink } from './routes/increment-access-link'
+import { getCsvFile } from './routes/get-csv-file'
 
 const server = fastify()
 
@@ -50,6 +51,7 @@ server.register(deleteLink)
 server.register(getLinkByShort)
 server.register(getAllLink)
 server.register(incrementAccessLink)
+server.register(getCsvFile)
 
 server
 	.listen({ port: 3333, host: '0.0.0.0' })

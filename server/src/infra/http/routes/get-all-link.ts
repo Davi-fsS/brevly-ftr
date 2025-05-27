@@ -27,8 +27,6 @@ export const getAllLink : FastifyPluginAsyncZod = async(server) => {
             })
                 .from(schema.links)
             
-                console.log(getAll)
-
             return reply.status(200).send(getAll)
         }
     )
