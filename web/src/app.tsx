@@ -1,8 +1,15 @@
-import { Card } from "./components/card";
 import logo from "./assets/Logo.svg";
 import { NewLinkCard } from "./components/new-link-card";
+import { LinksCreatedCard } from "./components/links-created-card";
+import { useEffect, useState } from "react";
 
 export function App(){
+  const [linksList, setLinksList] = useState([]);
+
+  useEffect(() => {
+    setLinksList([]);
+  }, []);
+
   return (
     <div className="w-100 mx-auto">
 
@@ -13,9 +20,7 @@ export function App(){
       <div className="flex flex-col gap-3">
         <NewLinkCard/>
 
-        <Card>
-          <h1>Meus links</h1>
-        </Card>
+        <LinksCreatedCard linksList={linksList}/>
       </div>
     </div>
   )

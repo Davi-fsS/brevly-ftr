@@ -13,7 +13,7 @@ export function NewLinkCard(){
         <div className="flex flex-col gap-5 pt-5">
             <Input placeholder="www.exemplo.com" label="link original" onChange={setOriginalLink} value={originalLink}/>
             <Input placeholder="brevly/" label="link encurtado" onChange={setShortedLink} value={shortedLink}/>
-            <Button onClick={() => {}}>Salvar link</Button>
+            <Button disabled={!(originalLink.length > 0 && shortedLink.length > 0)} onClick={() => {}}>Salvar link</Button>
         </div>
     </Card>
 }
