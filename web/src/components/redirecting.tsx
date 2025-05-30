@@ -1,17 +1,21 @@
 import { Card } from "./card"
 import logo from "../assets/Logo_Icon.svg";
 import { useEffect, useState } from "react";
+import { useLinks } from "../providers/link-provider";
 
 export function Redirecting(){
+    const { linkToRedirect } = useLinks();
     const [trigger, setTrigger] = useState(false);
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            window.location.href = "https://www.google.com"
-        }, 1000);
-        
-        return () => clearTimeout(timeout);
-      }, [trigger]);
+        if(linkToRedirect){
+            const timeout = setTimeout(() => {
+                window.location.href = linkToRedirect?.originalLink
+            }, 1000);
+            
+            return () => clearTimeout(timeout);
+        }
+      }, [linkToRedirect, trigger]);
 
     const handleTrigger = () => {
         setTrigger(!trigger);

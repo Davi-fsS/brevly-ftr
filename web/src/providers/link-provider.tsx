@@ -9,10 +9,13 @@ import { getAllLinks } from "../http/get-all-links";
 import { removeLink } from "../http/remove-link";
 import { toastSuccess } from "../toast/toast-success";
 import { toastError } from "../toast/toast-error";
+import { getLinkByShort } from "../http/get-link-by-short";
 
 interface LinkContextType {
     links: Link[];
     handleDeleteLink: (id: string, shortLink: string) => {};
+    handleGetLinkByShort: (shortLink: string) => {};
+    linkToRedirect: Link | undefined;
 };
   
 export const LinkContext = createContext<LinkContextType | undefined>(undefined);
@@ -20,6 +23,7 @@ export const LinkContext = createContext<LinkContextType | undefined>(undefined)
 export function LinkProvider({ children }: React.PropsWithChildren) {
   const [reload, setReload] = useState<boolean>(false);
   const [links, setLinks] = useState<Link[]>([]);
+  const [linkToRedirect, setLinkToRedirect] = useState<Link>();
 
   useEffect(() => {
     const requestData = async() => {
@@ -32,7 +36,7 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
   }, [reload]);
 
   const handleDeleteLink = async (id: string, shortLink: string) => {
-    const isConfirmed = confirm(`Você realmente quer apagar o link ${shortLink}?`)
+    const isConfirmed = confirm(`Você realmente quer apagar o link ${shortLink}?`);
 
     if(isConfirmed){
       const response = await removeLink(id);
@@ -47,8 +51,19 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
     }
   }
   
+  const handleGetLinkByShort = async (shortLink: string) => {
+    const response = await getLinkByShort(shortLink);
+
+    if(response.status === 200){
+      setLinkToRedirect(response.data);
+    }
+    else{
+      toastError("Não foi possível buscar este link");
+    }
+  }
+  
   return (
-    <LinkContext.Provider value={{ links, handleDeleteLink }}>
+    <LinkContext.Provider value={{ links, handleDeleteLink, handleGetLinkByShort, linkToRedirect }}>
       {children}
     </LinkContext.Provider>
   );
