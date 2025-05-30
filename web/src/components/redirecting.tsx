@@ -1,33 +1,35 @@
 import { Card } from "./card"
 import logo from "../assets/Logo_Icon.svg";
-import { Outlet, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 
 export function Redirecting(){
-    const location = useLocation();
-    const [loading, setLoading] = useState(false);
+    const [trigger, setTrigger] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-
         const timeout = setTimeout(() => {
-            setLoading(false);
+            window.location.href = "https://www.google.com"
         }, 1000);
-
+        
         return () => clearTimeout(timeout);
-    }, [location])
+      }, [trigger]);
 
-    return <div className="flex justify-center align-middle">
-        {
-            loading && <Card>
-                <div className="flex flex-col justify-center align-middle gap-6">
-                    <img src={logo} className="w-25 mx-auto"/>   
-                    <h1>Redirecionando...</h1>
-                    <p>O link será aberto automaticamente em alguns instantes.</p>
-                    <p>Não foi redirecionado? <a>Acesse aqui</a></p>
+    const handleTrigger = () => {
+        setTrigger(!trigger);
+    }
+      
+    return <div className="flex justify-center items-center mt-52">
+        <Card>
+            <div className="flex flex-col justify-center items-center gap-6 my-4">
+                <img src={logo} className="w-12 mx-auto"/>   
+                <h1 className="text-xl text-gray-tailwind-600 font-bold">Redirecionando...</h1>
+                <div>
+                    <center className="text-sm text-gray-500 font-medium">O link será aberto automaticamente em alguns instantes.</center>
+                    <center className="text-sm text-gray-500 font-medium">
+                        <span>Não foi redirecionado?</span> 
+                        <a onClick={handleTrigger} className="ml-1 text-sm text-blue-base underline font-medium cursor-pointer">Acesse aqui</a>
+                    </center>
                 </div>
-            </Card>
-        }
-        <Outlet/>
+            </div>
+        </Card>
     </div> 
 }
