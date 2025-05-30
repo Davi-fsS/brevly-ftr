@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 
 export function LinkItem({ id, originalLink, shortLink, accessCount } : Link){
-    const { handleDeleteLink, handleGetLinkByShort, linkToRedirect } = useLinks();
+    const { handleDeleteLink, handleGetLinkByShort, linkToRedirect, handleCopyLink } = useLinks();
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -17,6 +17,10 @@ export function LinkItem({ id, originalLink, shortLink, accessCount } : Link){
 
     const handleAccessLabel = () => {
         return `${accessCount} ${accessCount > 1 ? " acessos" : " acesso"}`
+    };
+
+    const handleCopyLinkToTransferArea = () => {
+        handleCopyLink(`${window.location.origin}/${shortLink}`);
     };
 
     return <div id={id}>
@@ -34,7 +38,7 @@ export function LinkItem({ id, originalLink, shortLink, accessCount } : Link){
                     <span className="text-gray-500 text-sm font-light">{handleAccessLabel()}</span>
                 </div>
                 <div className="flex flex-row gap-1">
-                    <ButtonIcon>
+                    <ButtonIcon onClick={handleCopyLinkToTransferArea}>
                         <CopyIcon color="#1F2025"/>
                     </ButtonIcon>
                     <ButtonIcon onClick={() => handleDeleteLink(id, shortLink)}>

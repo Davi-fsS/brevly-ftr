@@ -15,7 +15,7 @@ export const getCsvFile : FastifyPluginAsyncZod = async(server) => {
             schema: {
                 summary: "get csv file",
                 response: {
-                    200: z.object({ url: z.string() }),
+                    200: z.object({ url: z.string(), name: z.string() }),
                     400: z.object({ message: z.string() })
                 }
             }
@@ -60,7 +60,7 @@ export const getCsvFile : FastifyPluginAsyncZod = async(server) => {
             
             await upload.done()
 
-            return reply.status(200).send({ url: new URL(uniqueName, env.CLOUDFLARE_PUBLIC_URL).toString() })
+            return reply.status(200).send({ url: new URL(uniqueName, env.CLOUDFLARE_PUBLIC_URL).toString(), name: uniqueName })
         }
     )
 }

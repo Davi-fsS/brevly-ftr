@@ -10,7 +10,7 @@ export function Redirecting(){
     useEffect(() => {
         if(linkToRedirect){
             const timeout = setTimeout(() => {
-                window.location.href = linkToRedirect?.originalLink
+                window.open(linkToRedirect.originalLink, "_blank");
             }, 1000);
             
             return () => clearTimeout(timeout);
