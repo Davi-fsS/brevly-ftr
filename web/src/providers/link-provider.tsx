@@ -10,6 +10,7 @@ import { removeLink } from "../http/remove-link";
 import { toastSuccess } from "../toast/toast-success";
 import { toastError } from "../toast/toast-error";
 import { getLinkByShort } from "../http/get-link-by-short";
+import { incrementAccessLink } from "../http/increment-access-link";
 
 interface LinkContextType {
     links: Link[];
@@ -35,6 +36,16 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
     requestData();
   }, [reload]);
 
+  useEffect(() => {
+    const requestData = async() => {
+      if(linkToRedirect){
+        await handleIncrementAccessLink(linkToRedirect.id);
+      }
+    };
+
+    requestData();
+  }, [linkToRedirect]);
+
   const handleDeleteLink = async (id: string, shortLink: string) => {
     const isConfirmed = confirm(`Você realmente quer apagar o link ${shortLink}?`);
 
@@ -59,6 +70,14 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
     }
     else{
       toastError("Não foi possível buscar este link");
+    }
+  }
+
+  const handleIncrementAccessLink = async (id: string) => {
+    const response = await incrementAccessLink(id);
+
+    if(response.status !== 200){
+      toastError("Não foi possível incrementar o acesso deste link")
     }
   }
   
