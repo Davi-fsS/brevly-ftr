@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { Redirecting } from './components/redirecting';
 import { LinkNotFound } from './components/link-not-found';
 import { LinkProvider } from './providers/link-provider';
+import { ToastContainer } from 'react-toastify';
 
 const root = document.getElementById("root");
 
@@ -17,5 +18,6 @@ ReactDOM.createRoot(root!).render(
         <Route path='/redirecting' element={<Redirecting />}/>
       </Routes>
     </LinkProvider>
+    <ToastContainer />
   </BrowserRouter>
 );

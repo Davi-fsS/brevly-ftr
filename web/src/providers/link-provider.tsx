@@ -1,43 +1,54 @@
 import {
     createContext,
     useContext,
+    useEffect,
     useState,
 } from "react";
 import type { Link } from "../components/domain/link";
+import { getAllLinks } from "../http/get-all-links";
+import { removeLink } from "../http/remove-link";
+import { toastSuccess } from "../toast/toast-success";
+import { toastError } from "../toast/toast-error";
 
 interface LinkContextType {
     links: Link[];
-    setLinks: React.Dispatch<React.SetStateAction<Link[]>>;
+    handleDeleteLink: (id: string, shortLink: string) => {};
 };
   
 export const LinkContext = createContext<LinkContextType | undefined>(undefined);
   
 export function LinkProvider({ children }: React.PropsWithChildren) {
-  const mock = [
-    {
-      id: "0196fb02-2849-7fd1-9794-0c916c586d86",
-      originalLink: "http://google.com",
-      shortLink: "aabcddaaas",
-      accessCount: 0
-    },
-    {
-      id: "0196fb02-2849-7fd1-9794-0c916c586d86",
-      originalLink: "http://google.com",
-      shortLink: "aabcddaaas",
-      accessCount: 1
-    },
-    {
-      id: "0196fb02-2849-7fd1-9794-0c916c586d86",
-      originalLink: "http://google.com",
-      shortLink: "aabcddaaas",
-      accessCount: 3
-    },
-  ]
+  const [reload, setReload] = useState<boolean>(false);
+  const [links, setLinks] = useState<Link[]>([]);
+
+  useEffect(() => {
+    const requestData = async() => {
+      const response = await getAllLinks();
+      
+      setLinks(response)
+    };
+
+    requestData();
+  }, [reload]);
+
+  const handleDeleteLink = async (id: string, shortLink: string) => {
+    const isConfirmed = confirm(`Você realmente quer apagar o link ${shortLink}?`)
+
+    if(isConfirmed){
+      const response = await removeLink(id);
   
-  const [links, setLinks] = useState<Link[]>(mock);
+      if(response.status === 204){
+        toastSuccess("Link removido com sucesso!");
+        setReload(!reload);
+      }
+      else{
+        toastError("Não foi possível remover este link");
+      }
+    }
+  }
   
   return (
-    <LinkContext.Provider value={{ links, setLinks }}>
+    <LinkContext.Provider value={{ links, handleDeleteLink }}>
       {children}
     </LinkContext.Provider>
   );

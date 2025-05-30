@@ -17,8 +17,8 @@ export function NewLinkCard(){
         <h1 className="text-gray-tailwind-600 text-lg font-bold">Novo link</h1>
 
         <div className="flex flex-col gap-5 pt-5">
-            <Input placeholder="www.exemplo.com" label="link original" onChange={setOriginalLink} value={originalLink}/>
-            <Input placeholder="brevly/" label="link encurtado" onChange={setShortedLink} value={shortedLink}/>
+            <Input placeholder="www.exemplo.com" label="link original" onChange={setOriginalLink} value={originalLink} error={false}/>
+            <Input placeholder="brevly/" label="link encurtado" onChange={setShortedLink} value={shortedLink} error={true} errorMessage="aa"/>
             <Button disabled={!(originalLink.length > 0 && shortedLink.length > 0)} onClick={handleSave}>Salvar link</Button>
         </div>
     </Card>

@@ -9,6 +9,7 @@ import { getLinkByShort } from './routes/get-link-by-shor'
 import { getAllLink } from './routes/get-all-link'
 import { incrementAccessLink } from './routes/increment-access-link'
 import { getCsvFile } from './routes/get-csv-file'
+import cors from "@fastify/cors";
 
 const server = fastify()
 
@@ -44,7 +45,7 @@ server.register(fastifySwaggerUi, {
 	routePrefix: "/docs"
 })
 
-server.register(fastifyCors, { origin: '*' })
+server.register(fastifyCors, { origin: true, methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] })
 
 server.register(createLink)
 server.register(deleteLink)

@@ -1,8 +1,11 @@
 import { CopyIcon, TrashIcon } from "@phosphor-icons/react";
 import { ButtonIcon } from "./button-icon";
 import type { Link } from "../domain/link";
+import { useLinks } from "../../providers/link-provider";
 
 export function LinkItem({ id, originalLink, shortLink, accessCount } : Link){
+    const { handleDeleteLink } = useLinks();
+    
     const handleAccessLabel = () => {
         return `${accessCount} ${accessCount > 1 ? " acessos" : " acesso"}`
     };
@@ -25,7 +28,7 @@ export function LinkItem({ id, originalLink, shortLink, accessCount } : Link){
                     <ButtonIcon>
                         <CopyIcon color="#1F2025"/>
                     </ButtonIcon>
-                    <ButtonIcon>
+                    <ButtonIcon onClick={() => handleDeleteLink(id, shortLink)}>
                         <TrashIcon color="#1F2025"/>
                     </ButtonIcon>
                 </div>
