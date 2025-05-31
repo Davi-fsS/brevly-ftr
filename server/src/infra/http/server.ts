@@ -19,7 +19,7 @@ server.setSerializerCompiler(serializerCompiler)
 server.setErrorHandler((error, request, reply) => {
 	if(hasZodFastifySchemaValidationErrors(error)){
 		return reply.status(400).send({
-			message: "Validation error",
+			message: error.validation[0].message,
 			issues: error.validation
 		})
 	}
