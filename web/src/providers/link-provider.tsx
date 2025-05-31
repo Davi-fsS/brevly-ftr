@@ -62,7 +62,7 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
     const response = await createLink(originalLink, shortLink);
 
     if (response instanceof Error) {
-      toastError(response.message);
+      toastError(response.response.data.message);
       return;
     }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Card } from "./card"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -10,7 +10,7 @@ export function NewLinkCard(){
 
     const { handleCreateLink } = useLinks();
 
-    return <Card>
+    return <Card className="md:w-xl">
         <h1 className="text-gray-tailwind-600 text-lg font-bold">Novo link</h1>
 
         <div className="flex flex-col gap-5 pt-5">
