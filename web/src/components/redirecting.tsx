@@ -10,12 +10,14 @@ export function Redirecting(){
     useEffect(() => {
         if(linkToRedirect){
             const timeout = setTimeout(() => {
-                window.open(linkToRedirect.originalLink, "_blank");
+                const encodedLink = encodeURIComponent(linkToRedirect.originalLink);
+                const redirectUrl = `${window.location.origin}/redirecting/${linkToRedirect.shortLink}?url=${encodedLink}`;
+                window.open(redirectUrl, "_blank");
             }, 1000);
             
             return () => clearTimeout(timeout);
         }
-      }, [linkToRedirect, trigger]);
+    }, [linkToRedirect, trigger]);
 
     const handleTrigger = () => {
         setTrigger(!trigger);

@@ -2,25 +2,16 @@ import { CopyIcon, TrashIcon } from "@phosphor-icons/react";
 import { ButtonIcon } from "./button-icon";
 import type { Link } from "../domain/link";
 import { useLinks } from "../../providers/link-provider";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
 
 export function LinkItem({ id, originalLink, shortLink, accessCount } : Link){
-    const { handleDeleteLink, handleGetLinkByShort, linkToRedirect, handleCopyLink } = useLinks();
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        if(linkToRedirect){
-            navigate("/redirecting");
-        }
-    }, [linkToRedirect])
+    const { handleDeleteLink, handleGetLinkByShort, handleCopyLink } = useLinks();
 
     const handleAccessLabel = () => {
         return `${accessCount} ${accessCount > 1 ? " acessos" : " acesso"}`
     };
 
-    const handleCopyLinkToTransferArea = () => {
-        handleCopyLink(`${window.location.origin}/${shortLink}`);
+    const handleCopyLinkToTransferArea = async () => {
+        handleCopyLink(`${window.location.origin}/redirecting`, id);
     };
 
     return <div id={id}>

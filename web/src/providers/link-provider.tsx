@@ -13,6 +13,7 @@ import { getLinkByShort } from "../http/get-link-by-short";
 import { incrementAccessLink } from "../http/increment-access-link";
 import { createLink } from "../http/create-link";
 import { downloadCsvFile } from "../http/csv-file";
+import { useNavigate } from "react-router";
 
 interface LinkContextType {
     links: Link[];
@@ -21,7 +22,7 @@ interface LinkContextType {
     linkToRedirect: Link | undefined;
     handleCreateLink: (originalLink: string, shortLink: string) => {};
     handleDownloadCsvFile: () => {};
-    handleCopyLink: (link: string) => any;
+    handleCopyLink: (link: string, id: string) => any;
     loading: boolean
 };
   
@@ -32,6 +33,7 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
   const [reload, setReload] = useState<boolean>(false);
   const [links, setLinks] = useState<Link[]>([]);
   const [linkToRedirect, setLinkToRedirect] = useState<Link>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const requestData = async() => {
@@ -44,7 +46,7 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
     };
 
     requestData();
-  }, [reload]);
+  }, [reload, linkToRedirect]);
 
   useEffect(() => {
     const requestData = async() => {
@@ -70,7 +72,11 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
     }
   };
 
-  const handleCopyLink = (link: string) => {
+  const handleCopyLink = (link: string, id: string) => {
+    const linkSelect = links?.find(l => l.id == id);
+
+    setLinkToRedirect(linkSelect);
+
     navigator.clipboard.writeText(link)
     .then(() => {
       toastSuccess("Link copiado com sucesso!")
@@ -126,6 +132,7 @@ export function LinkProvider({ children }: React.PropsWithChildren) {
 
     if(response.status === 200){
       setLinkToRedirect(response.data);
+      navigate("/redirecting");
     }
     else{
       toastError("Não foi possível buscar este link");
